@@ -1,4 +1,4 @@
-\documentclass[showinstructions,faculty=firw,department=cws,phddegree=cws]{adsphd}
+\documentclass[showinstructions,faculty=firw,department=cws,phddegree=cws,nohyperref]{adsphd}
 %\documentclass[showinstructions,faculty=firw,department=cws,phddegree=cws,doctoralschool=ads]{adsphd}
 %\documentclass[showinstructions,showlabels,coverfontpercent=100,faculty=firw,department=cws,phddegree=cws]{adsphd}
 %\documentclass[croppedpdf,showinstructions,faculty=firw,department=cws,phddegree=cws]{adsphd}
@@ -101,6 +101,8 @@
 \usepackage{amssymb,amsthm}
 \usepackage{amsmath}
 
+\input{preamble.tex}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -139,6 +141,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \mainmatter % to get \pagenumbering{arabic}
+\csname @openrightfalse\endcsname % chktex 41
+\setboolean{spreadchapter}{true}
 
 % Show instructions on a separate page
 \instructionschapters\cleardoublepage
@@ -158,7 +162,8 @@
 \appendix
 
 \includeappendix{myappendix}
-
+\setboolean{spreadchapter}{false}
+\csname @openrighttrue\endcsname % chktex 41
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \backmatter
 

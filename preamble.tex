@@ -1,0 +1,94 @@
+\usepackage{etoolbox}
+\usepackage{csquotes}
+\usepackage{xifthen}
+\newboolean{spreadchapter}
+\setboolean{spreadchapter}{false}
+\newboolean{appspread}
+\setboolean{appspread}{false}
+
+%==============================================================================%
+% Titling                                                                      %
+%==============================================================================%
+
+\usepackage{titletoc}
+\usepackage{titlesec}
+
+%==============================================================================%
+% Tikz and Drawing                                                             %
+%==============================================================================%
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,chains}
+\usetikzlibrary{calc,fit,matrix,positioning,backgrounds}
+\usetikzlibrary{shapes.geometric}
+
+%==============================================================================%
+% Customization and Styling                                                    %
+%==============================================================================%
+
+\makeatletter{}
+\newcommand{\clearforleft}{\clearpage
+\if@twoside{}
+  \ifodd\c@page\hbox{}\newpage\if@twocolumn\hbox{}%
+  \newpage\fi\fi\fi}
+% \renewcommand{\mainmatter}{\pagenumbering{arabic}}
+\makeatother{}
+
+\titlecontents{psection}[0em] {\addvspace{1em}\bfseries} {\contentslabel{2.3em}} {} {\enspace\emph{\thecontentspage}}
+\titlecontents{psubsection}[3.2em] {} {\contentslabel{3.2em}} {} {\emph{\enspace\thecontentspage}}
+\titlecontents{psubsubsection}[6.4em] {} {\contentslabel{3.2em}} {} {\enspace\emph{\thecontentspage}}
+
+\newcounter{chnbrlarge}
+\newcommand{\printlocaltoc}{%
+{%\scriptsize
+	\vspace*{\fill}
+	\centering{}
+	{\large{
+	\ifthenelse{\boolean{appspread}}{Appendix \Alph{chnbrlarge}}{Chapter \arabic{chnbrlarge}} Outline}}
+	
+
+	\begin{minipage}[]{0.85\textwidth}\scriptsize
+		% \rule{\textwidth}{0.4pt}
+
+	\printcontents[chapters]{p}{1}{}
+
+		% \rule{\textwidth}{0.4pt}
+	\end{minipage}
+
+%	\end{addmargin}	
+}
+}
+% Hic sunt dracones
+\preto\chapter{%
+\ifthenelse{\boolean{spreadchapter}}{%
+\clearforleft{}
+\thispagestyle{empty}
+\setcounter{chnbrlarge}{\value{chapter}}
+\stepcounter{chnbrlarge}
+\startcontents[chapters]
+\begin{tikzpicture}[overlay,remember picture]
+\node[inner sep=0pt, align=center, anchor=south, text width=140mm,text height=140mm]
+at ($ (current page.south west) + (88.89mm,53.33mm) $) {\usefont{T1}{ppl}{b}{n}\fontsize{425}{0}\selectfont\textcolor{kulprimaryblue!5}{%
+	\ifthenelse{\boolean{appspread}}{\Alph{chnbrlarge}}{\arabic{chnbrlarge}}%
+	}
+};
+\end{tikzpicture}% 160 * 5/9
+
+\printlocaltoc{}
+
+\cleardoublepage{}
+\ifthenelse{\value{chapter}=0}{
+    \ifthenelse{\boolean{appspread}}{}{\pagenumbering{arabic}}
+}{}
+}{}
+}
+
+\preto\appendix{\setboolean{appspread}{true}}
+
+
+%==============================================================================%
+% Hyperref                                                                     %
+%==============================================================================%
+
+% load hyperref last
+\usepackage[hidelinks]{hyperref}
